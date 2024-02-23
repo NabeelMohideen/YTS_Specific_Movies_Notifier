@@ -5,9 +5,13 @@ import time
 import pytz
 from datetime import datetime
 import re
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 url = "https://yts.mx/"
-webhook_url = "webhook_url"
+webhook_url = os.environ['WEB_HOOK']
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
 
 current_date = datetime.now().strftime("%d.%m.%y")
@@ -16,7 +20,7 @@ def read_title_names():
     with open("movies_titles.txt", "r") as file:
         titles = set()
         for line in file:
-            cleaned_title = line.strip().lower().replace(":", "")
+            cleaned_title = line.strip().lower().replace(":", "").replace(" ", "")
             titles.add(cleaned_title)
         return titles
 
@@ -26,7 +30,7 @@ def scrape_latest_titles():
     
     latest_titles = []
     for movie in soup.select(".browse-movie-wrap a.browse-movie-title")[:4]:
-        title = re.sub(r'\[.*?\]', '', movie.text.strip().lower().replace(":", "").replace(" ", "", 1))
+        title = re.sub(r'\[.*?\]', '', movie.text.strip().lower().replace(":", ""))
         movie_url = url + movie['href']
         latest_titles.append({"title": title, "url": movie_url})    
     return latest_titles
