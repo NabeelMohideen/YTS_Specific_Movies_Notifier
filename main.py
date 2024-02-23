@@ -20,7 +20,7 @@ def read_title_names():
     with open("movies_titles.txt", "r") as file:
         titles = set()
         for line in file:
-            cleaned_title = line.strip().lower().replace(":", "").replace(" ", "")
+            cleaned_title = line.strip().lower().replace(":", "")
             titles.add(cleaned_title)
         return titles
 
@@ -30,7 +30,9 @@ def scrape_latest_titles():
     
     latest_titles = []
     for movie in soup.select(".browse-movie-wrap a.browse-movie-title")[:4]:
-        title = re.sub(r'\[.*?\]', '', movie.text.strip().lower().replace(":", ""))
+        title = movie.text.strip().lower().replace(":", "")
+        if re.search(r'\[.*?\]', title):
+            title = title.replace(" ", "", 1)
         movie_url = url + movie['href']
         latest_titles.append({"title": title, "url": movie_url})    
     return latest_titles
