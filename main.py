@@ -32,6 +32,7 @@ def scrape_latest_titles():
     for movie in soup.select(".browse-movie-wrap a.browse-movie-title")[:4]:
         title = movie.text.strip().lower().replace(":", "")
         if re.search(r'\[.*?\]', title):
+            title = re.sub(r'\[.*?\]', '', title)
             title = title.replace(" ", "", 1)
         movie_url = url + movie['href']
         latest_titles.append({"title": title, "url": movie_url})    
