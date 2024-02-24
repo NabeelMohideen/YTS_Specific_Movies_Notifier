@@ -19,7 +19,7 @@ $ cd YTS_Specific_Movies_Notifier
 $ pip install -r requirements.txt
 ```
 
-4. Add your discord webhook URL to `webhook_url` variable.
+4. Add your discord webhook URL to `WEB_HOOK` to `.env` file variable.
 
 5. Run Script
 ```sh
